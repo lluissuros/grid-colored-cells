@@ -25,6 +25,11 @@ const Grid = ({ size = 5 }) => {
   const handleSingleClick = (rowIndex, cellIndex) => {
     console.log(`sigle click from ${rowIndex}, ${cellIndex}`);
   };
+
+  const handleDoubleClick = (rowIndex, cellIndex) => {
+    console.log(`doubleClick from ${rowIndex}, ${cellIndex}`);
+  };
+
   const handleLongPress = (rowIndex, cellIndex) => {
     console.log(`handleLongPress from ${rowIndex}, ${cellIndex}`);
   };
@@ -40,6 +45,7 @@ const Grid = ({ size = 5 }) => {
                 <Cell
                   primaryColor={cell.primaryColor}
                   onSingleClick={() => handleSingleClick(rowIndex, cellIndex)}
+                  onDoubleClick={() => handleDoubleClick(rowIndex, cellIndex)}
                   onLongPress={() => handleLongPress(rowIndex, cellIndex)}
                 />
               );

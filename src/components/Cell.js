@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+
+import useDisableFastSingleClicks from "../utils/useDisableFastSingleClicks";
 import ClickNHold from "react-click-n-hold";
 
 const CellBox = styled.div`
@@ -11,7 +13,6 @@ const CellBox = styled.div`
 `;
 
 function Cell({
-  cellId,
   primaryColor,
   isSelected,
   onSingleClick,
@@ -22,7 +23,10 @@ function Cell({
 }) {
   return (
     <ClickNHold time={1} onClickNHold={onLongPress}>
-      <CellBox onClick={onSingleClick} primaryColor={primaryColor} />
+      <CellBox
+        onClick={useDisableFastSingleClicks(onSingleClick, onDoubleClick, 300)}
+        primaryColor={primaryColor}
+      />
     </ClickNHold>
   );
 }
