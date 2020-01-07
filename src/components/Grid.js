@@ -8,8 +8,13 @@ const Row = styled.div`
   border-width: 0px;
 `;
 
+const createCellData = ({ primaryColor = true } = {}) => ({
+  primaryColor
+});
+
 const Grid = ({ size = 5 }) => {
-  const initGrid = size => Array(size).fill(Array(size).fill(0));
+  const initGrid = size =>
+    Array(size).fill(Array(size).fill(createCellData({ primaryColor: true })));
   const [grid, setGrid] = useState(initGrid(size));
 
   useEffect(() => {
@@ -17,24 +22,32 @@ const Grid = ({ size = 5 }) => {
     console.log("TODO grid changed");
   }, [grid]);
 
+  const handleSingleClick = (rowIndex, cellIndex) => {
+    console.log(`sigle click from ${rowIndex}, ${cellIndex}`);
+  };
+  const handleLongPress = (rowIndex, cellIndex) => {
+    console.log(`handleLongPress from ${rowIndex}, ${cellIndex}`);
+  };
+
   return (
-    <div className="main-grid">
-      <Row>
-        <Cell number={0} primaryColor />
-        <Cell number={1} />
-        <Cell number={2} />
-      </Row>
-      <Row>
-        <Cell number={3} />
-        <Cell number={4} />
-        <Cell number={5} />
-      </Row>
-      <Row>
-        <Cell number={6} />
-        <Cell number={7} />
-        <Cell number={8} />
-      </Row>
-    </div>
+    <section>
+      {grid.map((row, rowIndex) => {
+        return (
+          <Row key={rowIndex}>
+            {/* TODO: CAREFUL I dont think rowIndex is good key, if we change content it will be performant?? */}
+            {row.map((cell, cellIndex) => {
+              return (
+                <Cell
+                  primaryColor={cell.primaryColor}
+                  onSingleClick={() => handleSingleClick(rowIndex, cellIndex)}
+                  onLongPress={() => handleLongPress(rowIndex, cellIndex)}
+                />
+              );
+            })}
+          </Row>
+        );
+      })}
+    </section>
   );
 };
 

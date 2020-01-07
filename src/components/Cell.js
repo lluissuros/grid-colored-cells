@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ClickNHold from "react-click-n-hold";
 
 const CellBox = styled.div`
   background: ${props =>
@@ -10,16 +11,20 @@ const CellBox = styled.div`
 `;
 
 function Cell({
+  cellId,
   primaryColor,
   isSelected,
   onSingleClick,
   onDoubleClick,
-  oLongPress,
+  onLongPress,
   onLongPressRelease,
   onMouseOver
 }) {
-  //probably the logic for check simple, double and long click is here
-  return <CellBox primaryColor={primaryColor} />;
+  return (
+    <ClickNHold time={1} onClickNHold={onLongPress}>
+      <CellBox onClick={onSingleClick} primaryColor={primaryColor} />
+    </ClickNHold>
+  );
 }
 
 export default Cell;
