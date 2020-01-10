@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useDisableFastSingleClicks from "../utils/useDisableFastSingleClicks";
 import ClickNHold from "react-click-n-hold";
 
-const CellBox = styled.div`
+const Square = styled.div`
   background: ${props =>
     props.primaryColor ? props.theme.primaryColor : props.theme.secondaryColor};
   width: 100px;
@@ -21,12 +21,14 @@ function Cell({
   onLongPressRelease,
   onMouseOver
 }) {
+  const singleOrDoubleClick = useDisableFastSingleClicks(
+    onSingleClick,
+    onDoubleClick,
+    200
+  );
   return (
     <ClickNHold time={1} onClickNHold={onLongPress}>
-      <CellBox
-        onClick={useDisableFastSingleClicks(onSingleClick, onDoubleClick, 300)}
-        primaryColor={primaryColor}
-      />
+      <Square primaryColor={primaryColor} onClick={singleOrDoubleClick} />
     </ClickNHold>
   );
 }

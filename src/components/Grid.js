@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Cell from "./Cell";
+import uuid from "uuid/v4";
 import styled from "styled-components";
+
+import Cell from "./Cell";
 
 const Row = styled.div`
   display: flex;
@@ -8,26 +10,61 @@ const Row = styled.div`
   border-width: 0px;
 `;
 
-const createCellData = ({ primaryColor = true } = {}) => ({
-  primaryColor
-});
-
 const Grid = ({ size = 5 }) => {
-  const initGrid = size =>
-    Array(size).fill(Array(size).fill(createCellData({ primaryColor: true })));
-  const [grid, setGrid] = useState(initGrid(size));
+  const createCellData = ({ primaryColor = true, id = uuid() } = {}) => {
+    console.log("createCellData");
+    return { id, primaryColor };
+  };
+
+  const [grid, setGrid] = useState([]);
 
   useEffect(() => {
-    //TODO
-    console.log("TODO grid changed");
-  }, [grid]);
+    const initGrid = size => {
+      console.log("INIT");
+      let grid = Array(size).fill(Array(size).fill(null));
+      return grid.map(row =>
+        row.map(cell => createCellData({ primaryColor: true }))
+      );
+    };
+    setGrid(initGrid(size));
+  }, [size]);
 
   const handleSingleClick = (rowIndex, cellIndex) => {
-    console.log(`sigle click from ${rowIndex}, ${cellIndex}`);
+    let gridCopy = grid.map(row => row.map(cell => ({ ...cell })));
+    gridCopy[rowIndex][cellIndex] = createCellData({
+      primaryColor: !gridCopy[rowIndex][cellIndex].primaryColor
+    });
+    setGrid(gridCopy);
+  };
+
+  const handleSingleClick_REMOVE_LATER_WORKS = (rowIndex, cellIndex) => {
+    setGrid(
+      grid.map((row, index) => {
+        if (index === rowIndex) {
+          return row.map((cell, index) => {
+            if (index === cellIndex) {
+              return { ...cell, primaryColor: !cell.primaryColor };
+            }
+            return cell;
+          });
+        } else {
+          return row;
+        }
+      })
+    );
   };
 
   const handleDoubleClick = (rowIndex, cellIndex) => {
-    console.log(`doubleClick from ${rowIndex}, ${cellIndex}`);
+    const columnIsPrimaryColor = !grid[rowIndex][cellIndex].primaryColor;
+    let gridCopy = grid.map(row =>
+      row.map((cell, index) =>
+        createCellData({
+          primaryColor:
+            index === cellIndex ? columnIsPrimaryColor : cell.primaryColor
+        })
+      )
+    );
+    setGrid(gridCopy);
   };
 
   const handleLongPress = (rowIndex, cellIndex) => {
@@ -36,23 +73,19 @@ const Grid = ({ size = 5 }) => {
 
   return (
     <section>
-      {grid.map((row, rowIndex) => {
-        return (
-          <Row key={rowIndex}>
-            {/* TODO: CAREFUL I dont think rowIndex is good key, if we change content it will be performant?? */}
-            {row.map((cell, cellIndex) => {
-              return (
-                <Cell
-                  primaryColor={cell.primaryColor}
-                  onSingleClick={() => handleSingleClick(rowIndex, cellIndex)}
-                  onDoubleClick={() => handleDoubleClick(rowIndex, cellIndex)}
-                  onLongPress={() => handleLongPress(rowIndex, cellIndex)}
-                />
-              );
-            })}
-          </Row>
-        );
-      })}
+      {grid.map((row, rowIndex) => (
+        <Row key={row.map(cell => cell.id).join("")}>
+          {row.map((cell, cellIndex) => (
+            <Cell
+              key={cell.id}
+              primaryColor={cell.primaryColor}
+              onSingleClick={() => handleSingleClick(rowIndex, cellIndex)}
+              onDoubleClick={() => handleDoubleClick(rowIndex, cellIndex)}
+              onLongPress={() => handleLongPress(rowIndex, cellIndex)}
+            />
+          ))}
+        </Row>
+      ))}
     </section>
   );
 };
