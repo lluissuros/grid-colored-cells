@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-export default function useDisableFastSingleClicks(
+export default function useDistinguishSingleOrDoubleClick(
   onSingleClick = () => {},
   onDoubleClick = () => {},
   minimum_interval_ms = 300
