@@ -14,7 +14,7 @@ function Post({ objectToPost = {} }) {
       setIsSaving(false);
       setHasError(true);
     };
-    console.log(postDebounced(objectToPost, onPostSucces, onPostError));
+    postDebounced(objectToPost, onPostSucces, onPostError);
   }, [objectToPost]);
 
   if (isSaving) {

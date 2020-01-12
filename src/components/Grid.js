@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import uuid from "uuid/v4";
+import NumericInput from "react-numeric-input";
 import styled from "styled-components";
 
 import Cell from "./Cell";
@@ -11,10 +12,11 @@ const Row = styled.div`
   border-width: 0px;
 `;
 
-const Grid = ({ size = 5 }) => {
+const Grid = ({ gridSizePx = 500 }) => {
   const [grid, setGrid] = useState([]);
   const [longPressCell, setLongPressCell] = useState(null);
   const [currentHovered, setCurrentHovered] = useState(null);
+  const [size, setSize] = useState(5);
 
   const createCellData = ({
     primaryColor = true,
@@ -46,7 +48,7 @@ const Grid = ({ size = 5 }) => {
   };
 
   const changeColumnColor = (rowIndex, columnIndex) => {
-    const columnIsPrimaryColor = !grid[rowIndex][columnIndex].primaryColor;
+    const columnIsPrimaryColor = grid[rowIndex][columnIndex].primaryColor;
     let gridCopy = grid.map(row =>
       row.map((cell, index) =>
         createCellData({
@@ -140,11 +142,20 @@ const Grid = ({ size = 5 }) => {
     <React.Fragment>
       <Post objectToPost={grid} />
       <section>
+        <NumericInput
+          min={2}
+          max={10}
+          value={size}
+          onChange={val => setSize(val)}
+        />
+      </section>
+      <section>
         {grid.map((row, rowIndex) => (
           <Row key={row.map(cell => cell.id).join("")}>
             {row.map((cell, cellIndex) => (
               <Cell
                 key={cell.id}
+                size={gridSizePx / size} //aprox!
                 primaryColor={cell.primaryColor}
                 isSelected={cell.isSelected}
                 selectionOriginalPrimaryColor={getOriginIsPrimaryColor()}

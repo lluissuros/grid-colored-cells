@@ -38,7 +38,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Grid size={5} />
+      <Grid />
     </ThemeProvider>
   );
 }

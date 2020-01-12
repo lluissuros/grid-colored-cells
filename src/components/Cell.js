@@ -17,8 +17,8 @@ const getColor = (isPrimaryColor, theme) =>
 
 const Square = styled.div`
   background: ${props => getColor(props.primaryColor, props.theme)};
-  width: 100px;
-  height: 100px;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
   border: 5px solid ${props => props.theme.darkBackgroundColor};
 
   &.selected {
@@ -36,6 +36,7 @@ const Square = styled.div`
 function Cell({
   primaryColor = true,
   isSelected = false,
+  size = 100,
   selectionOriginalPrimaryColor = true,
   onSingleClick = () => {},
   onDoubleClick = () => {},
@@ -53,6 +54,7 @@ function Cell({
     <ClickNHold time={1} onClickNHold={onLongPress}>
       <Square
         className={isSelected ? "selected" : ""}
+        size={size}
         primaryColor={primaryColor}
         selectionOriginalPrimaryColor={selectionOriginalPrimaryColor}
         onClick={singleOrDoubleClick}

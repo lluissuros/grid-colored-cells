@@ -13,12 +13,10 @@ const POST_URL = `${BASE_URL}/post`;
 
 async function post(objectToPost, onSuccessCb, onErrorCb) {
   try {
-    console.log("POSTING...", objectToPost);
     const response = await axios.post(POST_URL, objectToPost);
-    console.log(response);
-    onSuccessCb();
+    onSuccessCb(response);
   } catch (e) {
-    onErrorCb();
+    onErrorCb(e);
   }
 }
 

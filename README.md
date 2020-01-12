@@ -1,3 +1,13 @@
+##### There is a deployment for the app in here:  https://front.lluissuros.now.sh
+
+### Some worth mentioning points:
+
+- Regarding the CORS problem with the Postman endpoint, I created a super simple node server to enable CORS from there. I am also attaching the code for it.
+- I used StyledComponents for the cssTo distinguish between single and double Click, I introduce a little latency (see useDistinguishSingleOrDoubleClick)
+- I decided to keep all the logic on <Grid> and let <Cell> be a pure UI component that only handles styles and events
+- I am aware there are some console warnings, I would for sure remove them all in a professional work, but I think they are not critical for this task
+- I didn't build a unit test suite. I would surely do it in a professional work. If you need some samples of me unit testing, please let me know and I will add some to the project.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
