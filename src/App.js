@@ -8,14 +8,15 @@ const palette = {
   darkBlue: "#001f3f",
   black: "#111111",
   green: "#2ECC40",
-  red: "#FF4136"
+  red: "#FF4136",
+  yellow: "#FFDC00"
 };
 
 const theme = {
   primaryColor: palette.green,
   secondaryColor: palette.red,
   darkBackgroundColor: palette.darkBlue,
-  defaultFontColor: palette.black
+  defaultFontColor: palette.yellow
 };
 
 const GlobalStyle = createGlobalStyle`

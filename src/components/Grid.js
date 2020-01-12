@@ -3,6 +3,7 @@ import uuid from "uuid/v4";
 import styled from "styled-components";
 
 import Cell from "./Cell";
+import Post from "./Post";
 
 const Row = styled.div`
   display: flex;
@@ -35,11 +36,6 @@ const Grid = ({ size = 5 }) => {
     };
     setGrid(initGrid(size));
   }, [size]);
-
-  useEffect(() => {
-    // TODO: call autosave callback
-    console.log("change grid, call useAutoSaver ");
-  }, [grid]);
 
   const changeSingleCellColor = (rowIndex, columnIndex) => {
     let gridCopy = grid.map(row => row.map(cell => ({ ...cell })));
@@ -141,25 +137,30 @@ const Grid = ({ size = 5 }) => {
   };
 
   return (
-    <section>
-      {grid.map((row, rowIndex) => (
-        <Row key={row.map(cell => cell.id).join("")}>
-          {row.map((cell, cellIndex) => (
-            <Cell
-              key={cell.id}
-              primaryColor={cell.primaryColor}
-              isSelected={cell.isSelected}
-              selectionOriginalPrimaryColor={getOriginIsPrimaryColor()}
-              onSingleClick={() => changeSingleCellColor(rowIndex, cellIndex)}
-              onDoubleClick={() => changeColumnColor(rowIndex, cellIndex)}
-              onLongPress={() => handleLongPress(rowIndex, cellIndex)}
-              onPressRelease={() => handleLongPressRelease(rowIndex, cellIndex)}
-              onHover={() => handleHover(rowIndex, cellIndex)}
-            />
-          ))}
-        </Row>
-      ))}
-    </section>
+    <React.Fragment>
+      <Post objectToPost={grid} />
+      <section>
+        {grid.map((row, rowIndex) => (
+          <Row key={row.map(cell => cell.id).join("")}>
+            {row.map((cell, cellIndex) => (
+              <Cell
+                key={cell.id}
+                primaryColor={cell.primaryColor}
+                isSelected={cell.isSelected}
+                selectionOriginalPrimaryColor={getOriginIsPrimaryColor()}
+                onSingleClick={() => changeSingleCellColor(rowIndex, cellIndex)}
+                onDoubleClick={() => changeColumnColor(rowIndex, cellIndex)}
+                onLongPress={() => handleLongPress(rowIndex, cellIndex)}
+                onPressRelease={() =>
+                  handleLongPressRelease(rowIndex, cellIndex)
+                }
+                onHover={() => handleHover(rowIndex, cellIndex)}
+              />
+            ))}
+          </Row>
+        ))}
+      </section>
+    </React.Fragment>
   );
 };
 
