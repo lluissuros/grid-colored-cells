@@ -20,7 +20,11 @@ function Post({ objectToPost = {} }) {
   if (isSaving) {
     return (
       <section>
-        <div>Auto Saving ... ⏱️⏳⏱️⏳⏱️⏳⏱️⏳⏱️⏳⏱️⏳</div>
+        <div>
+          <span role="img" aria-label="saving">
+            Auto Saving ... ⏱️⏳⏱️⏳⏱️⏳⏱️⏳⏱️⏳⏱️⏳
+          </span>
+        </div>
       </section>
     );
   }
@@ -28,9 +32,17 @@ function Post({ objectToPost = {} }) {
   return (
     <section>
       {hasError ? (
-        <div>Some Error ocurred on autosaving 😔❌😔❌😔❌😔❌😔❌</div>
+        <div>
+          <span role="img" aria-label="saving">
+            Some Error ocurred on autosaving 😔❌😔❌😔❌😔❌😔❌
+          </span>
+        </div>
       ) : (
-        <div>Autosaved correctly ✅👍✅👍✅👍✅👍✅👍</div>
+        <div>
+          <span role="img" aria-label="saving">
+            Autosaved correctly ✅👍✅👍✅👍✅👍✅👍
+          </span>
+        </div>
       )}
     </section>
   );
