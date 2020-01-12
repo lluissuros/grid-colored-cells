@@ -70,6 +70,7 @@ const Grid = ({ size = 5 }) => {
       isSelected: true
     });
     setLongPressCell([rowIndex, columnIndex]);
+    setCurrentHovered([rowIndex, columnIndex]);
     setGrid(gridCopy);
   };
 
@@ -108,12 +109,39 @@ const Grid = ({ size = 5 }) => {
     setCurrentHovered([hoveredRowIndex, hoveredColumnIndex]);
   };
 
-  const handleLongPressRelease = (rowIndex, cellIndex) => {
-    //if longPress, change colors
-    // get currentColor of longPressCell
-    // for each selected cell,
-    //remove longPressCell and currentHovered
-    console.log(`handleLongPressRelease from ${rowIndex}, ${cellIndex}`);
+  const handleLongPressRelease = (releaseRowIndex, releaseColumnIndex) => {
+    if (!longPressCell) {
+      return;
+    }
+    console.log(
+      `handleLongPressRelease from ${releaseRowIndex}, ${releaseColumnIndex}`
+    );
+    const [longPressRowIndex, longPressColumnIndex] = longPressCell;
+    const originIsPrimaryColor =
+      grid[longPressRowIndex][longPressColumnIndex].primaryColor;
+
+    let gridCopy = grid.map((row, rowIndex) =>
+      row.map((cell, columnIndex) => {
+        if (cell.isSelected) {
+          return createCellData({
+            primaryColor: originIsPrimaryColor,
+            isSelected: false
+          });
+        }
+        return { ...cell };
+      })
+    );
+    setLongPressCell(null);
+    setCurrentHovered(null);
+    setGrid(gridCopy);
+  };
+
+  const getOriginIsPrimaryColor = () => {
+    if (!longPressCell) {
+      return null;
+    }
+    const [longPressRowIndex, longPressColumnIndex] = longPressCell;
+    return grid[longPressRowIndex][longPressColumnIndex].primaryColor;
   };
 
   return (
@@ -125,12 +153,11 @@ const Grid = ({ size = 5 }) => {
               key={cell.id}
               primaryColor={cell.primaryColor}
               isSelected={cell.isSelected}
+              selectionOriginalPrimaryColor={getOriginIsPrimaryColor()}
               onSingleClick={() => changeSingleCellColor(rowIndex, cellIndex)}
               onDoubleClick={() => changeColumnColor(rowIndex, cellIndex)}
               onLongPress={() => handleLongPress(rowIndex, cellIndex)}
-              onLongPressRelease={() =>
-                handleLongPressRelease(rowIndex, cellIndex)
-              }
+              onPressRelease={() => handleLongPressRelease(rowIndex, cellIndex)}
               onHover={() => handleHover(rowIndex, cellIndex)}
             />
           ))}

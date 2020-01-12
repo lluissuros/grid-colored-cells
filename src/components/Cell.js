@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled, { keyframes } from "styled-components";
 
 import useDistinguishSingleOrDoubleClick from "../utils/useDistinguishSingleOrDoubleClick";
@@ -12,9 +12,11 @@ const rotate = keyframes`
     100%   {transform: rotate(0deg)}
 `;
 
+const getColor = (isPrimaryColor, theme) =>
+  isPrimaryColor ? theme.primaryColor : theme.secondaryColor;
+
 const Square = styled.div`
-  background: ${props =>
-    props.primaryColor ? props.theme.primaryColor : props.theme.secondaryColor};
+  background: ${props => getColor(props.primaryColor, props.theme)};
   width: 100px;
   height: 100px;
   border: 5px solid ${props => props.theme.darkBackgroundColor};
@@ -25,21 +27,21 @@ const SelectedSquare = styled(Square)`
   filter: grayscale(50%)
     drop-shadow(
       3px 12px 11px
-        ${props =>
-          props.primaryColor
-            ? props.theme.primaryColor
-            : props.theme.secondaryColor}
+        ${props => getColor(props.selectionOriginalPrimaryColor, props.theme)}
     );
+  border: 5px solid
+    ${props => getColor(props.selectionOriginalPrimaryColor, props.theme)};
 `;
 
 function Cell({
-  primaryColor,
-  isSelected,
-  onSingleClick,
-  onDoubleClick,
-  onLongPress,
-  onLongPressRelease,
-  onHover
+  primaryColor = true,
+  isSelected = false,
+  selectionOriginalPrimaryColor = true,
+  onSingleClick = () => {},
+  onDoubleClick = () => {},
+  onLongPress = () => {},
+  onPressRelease = () => {},
+  onHover = () => {}
 }) {
   const singleOrDoubleClick = useDistinguishSingleOrDoubleClick(
     onSingleClick,
@@ -52,16 +54,18 @@ function Cell({
       {isSelected ? (
         <SelectedSquare
           primaryColor={primaryColor}
+          selectionOriginalPrimaryColor={selectionOriginalPrimaryColor}
           onClick={singleOrDoubleClick}
           onMouseOver={onHover}
-          onMouseUp={onLongPressRelease}
+          onMouseUp={onPressRelease}
         />
       ) : (
         <Square
           primaryColor={primaryColor}
+          selectionOriginalPrimaryColor={selectionOriginalPrimaryColor}
           onClick={singleOrDoubleClick}
           onMouseOver={onHover}
-          onMouseUp={onLongPressRelease}
+          onMouseUp={onPressRelease}
         />
       )}
     </ClickNHold>
