@@ -38,7 +38,7 @@ const Grid = ({ size = 5 }) => {
 
   useEffect(() => {
     // TODO: call autosave callback
-    console.log("change grid");
+    console.log("change grid, call useAutoSaver ");
   }, [grid]);
 
   const changeSingleCellColor = (rowIndex, columnIndex) => {
@@ -63,7 +63,6 @@ const Grid = ({ size = 5 }) => {
   };
 
   const handleLongPress = (rowIndex, columnIndex) => {
-    console.log(`handleLongPress from ${rowIndex}, ${columnIndex}`);
     let gridCopy = grid.map(row => row.map(cell => ({ ...cell })));
     gridCopy[rowIndex][columnIndex] = createCellData({
       primaryColor: gridCopy[rowIndex][columnIndex].primaryColor,
@@ -113,9 +112,6 @@ const Grid = ({ size = 5 }) => {
     if (!longPressCell) {
       return;
     }
-    console.log(
-      `handleLongPressRelease from ${releaseRowIndex}, ${releaseColumnIndex}`
-    );
     const [longPressRowIndex, longPressColumnIndex] = longPressCell;
     const originIsPrimaryColor =
       grid[longPressRowIndex][longPressColumnIndex].primaryColor;

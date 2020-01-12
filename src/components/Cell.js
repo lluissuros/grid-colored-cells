@@ -20,17 +20,17 @@ const Square = styled.div`
   width: 100px;
   height: 100px;
   border: 5px solid ${props => props.theme.darkBackgroundColor};
-`;
 
-const SelectedSquare = styled(Square)`
-  animation: ${rotate} 0.5s linear infinite;
-  filter: grayscale(50%)
-    drop-shadow(
-      3px 12px 11px
-        ${props => getColor(props.selectionOriginalPrimaryColor, props.theme)}
-    );
-  border: 5px solid
-    ${props => getColor(props.selectionOriginalPrimaryColor, props.theme)};
+  &.selected {
+    animation: ${rotate} 0.5s linear infinite;
+    filter: grayscale(50%)
+      drop-shadow(
+        3px 12px 11px
+          ${props => getColor(props.selectionOriginalPrimaryColor, props.theme)}
+      );
+    border: 5px solid
+      ${props => getColor(props.selectionOriginalPrimaryColor, props.theme)};
+  }
 `;
 
 function Cell({
@@ -51,23 +51,14 @@ function Cell({
 
   return (
     <ClickNHold time={1} onClickNHold={onLongPress}>
-      {isSelected ? (
-        <SelectedSquare
-          primaryColor={primaryColor}
-          selectionOriginalPrimaryColor={selectionOriginalPrimaryColor}
-          onClick={singleOrDoubleClick}
-          onMouseOver={onHover}
-          onMouseUp={onPressRelease}
-        />
-      ) : (
-        <Square
-          primaryColor={primaryColor}
-          selectionOriginalPrimaryColor={selectionOriginalPrimaryColor}
-          onClick={singleOrDoubleClick}
-          onMouseOver={onHover}
-          onMouseUp={onPressRelease}
-        />
-      )}
+      <Square
+        className={isSelected ? "selected" : ""}
+        primaryColor={primaryColor}
+        selectionOriginalPrimaryColor={selectionOriginalPrimaryColor}
+        onClick={singleOrDoubleClick}
+        onMouseOver={onHover}
+        onMouseUp={onPressRelease}
+      />
     </ClickNHold>
   );
 }
